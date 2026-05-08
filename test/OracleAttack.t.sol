@@ -21,8 +21,8 @@ contract OracleAttackTest is Test {
     function testOracleExploit() public {
         vm.deal(attacker, 10 ether);
         vm.startPrank(attacker);
-        lending.depositCollateral{value: 1 ether}
-        ();
+        lending.depositCollateral{value: 1 ether}();
+        vm.expectRevert("Not owner");
         oracle.setPrice(100);
         lending.borrow();
         vm.stopPrank();

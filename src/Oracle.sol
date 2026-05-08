@@ -9,8 +9,12 @@ contract Oracle {
         owner = msg.sender;
         price = initialPrice;
     }
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
 
-    function setPrice(uint256 newPrice) external {
+    function setPrice(uint256 newPrice) external onlyOwner {
         price = newPrice;
     }
 }
