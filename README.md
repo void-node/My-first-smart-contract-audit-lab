@@ -20,6 +20,10 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Vulnerability**: Dependency on an unprotected Oracle, allowing attackers to manipulate asset prices.
 - **Mitigation**: Implementation of decentralized price feeds (e.g., **Chainlink**) and strict access control.
 
+## Lab 5: Flash Loan Attack
+- **Vulnerability**: Exploiting protocol logic by borrowing massive amounts of uncollateralized capital within a single transaction.
+- **Mitigation**: Implementing "Snapshot" mechanisms or requiring actions to span across multiple blocks (Time-locks).
+
 ---
 
 ## Technical Stack & Usage
