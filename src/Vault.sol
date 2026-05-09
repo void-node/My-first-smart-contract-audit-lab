@@ -3,6 +3,7 @@ pragma solidity 0.8.28;
 
 contract Vault {
     address private _owner;
+    event OwnerChanged(address indexed oldOwner, address indexed newOwner);
     uint256 private _totalGems;
 
     error NotOwner();
@@ -17,7 +18,9 @@ contract Vault {
     }
 
     function changeOwner(address newOwner) external onlyOwner {
+        address oldOwner = _owner;
         _owner = newOwner;
+        emit OwnerChanged(oldOwner, newOwner);
     }
 
     function depositGems(uint256 amount) external {

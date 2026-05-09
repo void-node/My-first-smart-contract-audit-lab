@@ -38,3 +38,8 @@ foundryup
 ```bash
 forge test -vvv
 ```
+
+---
+
+## 📑 Audit Reports
+Detailed analysis of found vulnerabilities and professional mitigation patterns can be found in the [reports](./reports) directory.
