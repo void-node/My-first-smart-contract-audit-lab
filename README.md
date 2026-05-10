@@ -24,6 +24,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Vulnerability**: Exploiting protocol logic by borrowing massive amounts of uncollateralized capital within a single transaction.
 - **Mitigation**: Implementing "Snapshot" mechanisms or requiring actions to span across multiple blocks (Time-locks).
 
+## Lab 6: Signature Malleability (Cryptography)
+- **Vulnerability**: Exploiting the mathematical symmetry of ECDSA signatures (the `s` value) to bypass signature uniqueness checks.
+- **Research**: Demonstrated how an attacker can "double-spend" a valid admin signature by flipping its `s` value.
+- **Protection**: Verified that modern **OpenZeppelin ECDSA** libraries effectively mitigate this by enforcing "Low-S" values.
+
 ---
 
 ## Technical Stack & Usage
