@@ -29,6 +29,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker can "double-spend" a valid admin signature by flipping its `s` value.
 - **Protection**: Verified that modern **OpenZeppelin ECDSA** libraries effectively mitigate this by enforcing "Low-S" values.
 
+## Lab 7: Read-Only Reentrancy (Oracle Manipulation)
+- **Vulnerability**: Exploiting a cross-contract state mismatch where a lending protocol reads asset prices from an external liquidity pool while it is temporarily in an unstable, half-executed state during a withdrawal.
+- **Research**: Demonstrated how an attacker invokes a view function inside a `receive()` fallback loop when the pool's asset reserves and total supply tracking are out of sync, returning a manipulated price.
+- **Mitigation**: Utilizing Time-Weighted Average Prices (TWAP) or applying reentrancy locks even to read-only view functions via cross-contract reentrancy checks.
+
 ---
 
 ## Technical Stack & Usage
