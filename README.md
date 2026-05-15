@@ -34,6 +34,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker invokes a view function inside a `receive()` fallback loop when the pool's asset reserves and total supply tracking are out of sync, returning a manipulated price.
 - **Mitigation**: Utilizing Time-Weighted Average Prices (TWAP) or applying reentrancy locks even to read-only view functions via cross-contract reentrancy checks.
 
+## Lab 8: ERC-4626 Inflation Attack (Rounding Errors)
+- **Vulnerability**: A mathematical vulnerability in token vault share calculation where an attacker front-runs the first depositor with 1 wei to mint 1 share, then artificially inflates the vault's asset balance via a direct transfer.
+- **Research**: Demonstrated how the inflated asset-to-share ratio forces subsequent honest deposits to yield less than 1 share. Due to Solidity's floor division, any fractional share calculation drops to zero, allowing the attacker to completely absorb the honest user's capital during withdrawal.
+- **Mitigation**: Enforcing a minimum initial deposit (burning a fraction of the first shares to a dead address) or utilizing virtual assets and virtual shares to offset the inflation ratio.
+
 ---
 
 ## Technical Stack & Usage
