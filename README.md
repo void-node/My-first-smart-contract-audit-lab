@@ -39,6 +39,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how the inflated asset-to-share ratio forces subsequent honest deposits to yield less than 1 share. Due to Solidity's floor division, any fractional share calculation drops to zero, allowing the attacker to completely absorb the honest user's capital during withdrawal.
 - **Mitigation**: Enforcing a minimum initial deposit (burning a fraction of the first shares to a dead address) or utilizing virtual assets and virtual shares to offset the inflation ratio.
 
+## Lab 9: Governance Flash Loan Attack (Vote Hijacking)
+- **Vulnerability**: A logical flaw where a governance contract calculates voting power using instantaneous spot balances via `balanceOf` instead of historical block snapshots.
+- **Research**: Demonstrated how an attacker uses a flash loan to temporarily acquire 1,000,000 tokens, triggers the `vote()` function to record maximum voting weight, and repays the loan within the same transaction.
+- **Mitigation**: Implementing checkpointed token balances (such as OpenZeppelin's `ERC20Votes`) to query voting power at a specific historical block number.
+
 ---
 
 ## Technical Stack & Usage
