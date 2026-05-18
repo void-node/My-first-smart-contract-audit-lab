@@ -44,6 +44,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker uses a flash loan to temporarily acquire 1,000,000 tokens, triggers the `vote()` function to record maximum voting weight, and repays the loan within the same transaction.
 - **Mitigation**: Implementing checkpointed token balances (such as OpenZeppelin's `ERC20Votes`) to query voting power at a specific historical block number.
 
+## Lab 10: Staking Pool Reward Manipulation (Pool Dilution)
+- **Vulnerability**: An economic design flaw in yield distribution where reward metrics are updated instantaneously based on the current spot volume of staked assets rather than tracking the precise time duration capital spends locked in the contract.
+- **Research**: Demonstrated how an attacker executes a pool dilution attack by front-running a reward notification transaction with a massive stake. The attacker claims a disproportionate 90% share of the rewards immediately within the same block and exits, draining the yield accumulated by long-term depositors.
+- **Mitigation**: Implementing a linearly decaying reward distribution model (e.g., Synthetix `RewardRate` over a fixed `rewardsDuration`) or enforcing a minimum staking duration checkpoint to lock rewards until a time threshold is passed.
+
 ---
 
 ## Technical Stack & Usage
