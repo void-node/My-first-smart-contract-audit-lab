@@ -49,6 +49,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker executes a pool dilution attack by front-running a reward notification transaction with a massive stake. The attacker claims a disproportionate 90% share of the rewards immediately within the same block and exits, draining the yield accumulated by long-term depositors.
 - **Mitigation**: Implementing a linearly decaying reward distribution model (e.g., Synthetix `RewardRate` over a fixed `rewardsDuration`) or enforcing a minimum staking duration checkpoint to lock rewards until a time threshold is passed.
 
+## Lab 11: Cream Finance Cross-Contract Reentrancy (Collateral Drain)
+- **Vulnerability**: A critical business logic flaw in lending market architectures where asset borrowing operations violate the Checks-Effects-Interactions (CEI) pattern, executing low-level token transfers before updating the user's debt metrics in state storage.
+- **Research**: Demonstrated how an attacker leverages a reentrancy hook during a `borrow()` execution to invoke `withdrawCollateral()`. Because the debt calculation remains at zero during the fallback invocation, the protocol permits the total liquidation of the collateral, leaving the system with unbacked bad debt.
+- **Mitigation**: Strictly adhering to the Checks-Effects-Interactions pattern by updating state variables before executing external calls, or enforcing robust cross-contract reentrancy guards (`nonReentrant`) on all state-changing entry points.
+
 ---
 
 ## Technical Stack & Usage
