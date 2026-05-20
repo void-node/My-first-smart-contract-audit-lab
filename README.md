@@ -54,6 +54,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker leverages a reentrancy hook during a `borrow()` execution to invoke `withdrawCollateral()`. Because the debt calculation remains at zero during the fallback invocation, the protocol permits the total liquidation of the collateral, leaving the system with unbacked bad debt.
 - **Mitigation**: Strictly adhering to the Checks-Effects-Interactions pattern by updating state variables before executing external calls, or enforcing robust cross-contract reentrancy guards (`nonReentrant`) on all state-changing entry points.
 
+## Lab 12: Lendf.Me ERC-777 Callback Hijacking (Balance Inflation)
+- **Vulnerability**: A critical architectural flaw in decentralized state synchronization where a lending protocol invokes arbitrary external hooks or token callbacks before committing the depositor's net balance updates to storage state.
+- **Research**: Demonstrated how an attacker leverages an ERC-777 token style callback to issue an immediate `withdraw()` request mid-deposit. Because the state update is delayed, the system permits the asset removal against previous balances and subsequently executes the delayed storage addition, creating capital out of thin air.
+- **Mitigation**: Enforcing strict Checks-Effects-Interactions (CEI) design patterns where internal accounting ledger states are mutated before triggering any outbound communication, ether transfers, or token callback executions.
+
 ---
 
 ## Technical Stack & Usage
