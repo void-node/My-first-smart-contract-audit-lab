@@ -59,6 +59,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker leverages an ERC-777 token style callback to issue an immediate `withdraw()` request mid-deposit. Because the state update is delayed, the system permits the asset removal against previous balances and subsequently executes the delayed storage addition, creating capital out of thin air.
 - **Mitigation**: Enforcing strict Checks-Effects-Interactions (CEI) design patterns where internal accounting ledger states are mutated before triggering any outbound communication, ether transfers, or token callback executions.
 
+## Lab 13: ERC-4626 Vault Inflation Attack (Math Rounding Down)
+- **Vulnerability**: A critical mathematical vulnerability in tokenized vault asset-to-share accounting where the system relies on native Solidity integer division that rounds down, allowing early depositors to manipulate the conversion rate by inflating the vault's total assets.
+- **Research**: Demonstrated how an attacker minints the very first share for 1 wei, then executes a direct asset donation via `receiveProfit()` to artificially skew the share-price logic. Subsequent честный users suffer from heavy rounding-down errors, minting zero or fewer shares than their actual economic contribution, which results in capital theft during liquidation.
+- **Mitigation**: Integrating robust virtual shares and virtual assets offsets into the allocation formulas (OpenZeppelin standard), or pruningly minting the baseline dead shares directly to `address(0)` on the first initialization block to make vault inflation economically non-viable.
+
 ---
 
 ## Technical Stack & Usage
