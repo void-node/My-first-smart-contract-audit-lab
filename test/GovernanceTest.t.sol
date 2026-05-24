@@ -17,7 +17,7 @@ contract GovernanceTest is Test, IFlashLoanReceiver {
         token = new GovernanceToken(1_000_000);
         pool = new FlashLoanPool(address(token));
         gov = new Governance(address(token));
-        token.transfer(address(pool), 1_000_000);
+        require(token.transfer(address(pool), 1_000_000), "Transfer failed");
     }
 
     function testFlashLoanVoteHijacking() public {
@@ -28,6 +28,6 @@ contract GovernanceTest is Test, IFlashLoanReceiver {
 
     function executeOperation(uint256 amount) external {
         gov.vote();
-        token.transfer(msg.sender, amount);
+        require(token.transfer(msg.sender, amount), "Transfer failed");
     }
 }

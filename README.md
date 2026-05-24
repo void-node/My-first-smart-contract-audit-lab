@@ -64,6 +64,18 @@ Practical implementation of common Solidity vulnerabilities and professional mit
 - **Research**: Demonstrated how an attacker minints the very first share for 1 wei, then executes a direct asset donation via `receiveProfit()` to artificially skew the share-price logic. Subsequent честный users suffer from heavy rounding-down errors, minting zero or fewer shares than their actual economic contribution, which results in capital theft during liquidation.
 - **Mitigation**: Integrating robust virtual shares and virtual assets offsets into the allocation formulas (OpenZeppelin standard), or pruningly minting the baseline dead shares directly to `address(0)` on the first initialization block to make vault inflation economically non-viable.
 
+### Lab 14: Uniswap V3 TWAP Oracle Manipulation
+- **Concept:** Exploiting short-window Time-Weighted Average Price (TWAP) oracles in DeFi lending protocols.
+- **Vulnerability:** The lending contract relies on a short 5-minute (300 seconds) TWAP window and uses a linear price-to-tick calculation `uint256(tick) * 10**18` for positive ticks, making it extremely sensitive to oracle manipulation.
+- **Exploit Logic:** 
+  1. Deposited 1 whole token (10^18 wei) as collateral into the lending platform.
+  2. Directly manipulated the `MockUniswapV3Pool` state by forcing a massive cumulative tick of `30,000,000`.
+  3. Advanced time by 1 second (`vm.warp`) to simulate the block progression.
+  4. The oracle calculated the time-weighted average tick as `30,000,000 / 300 = 100,000`, inflating the collateral token price to `100,000 * 10**18`.
+  5. Successfully drained **all 100,000 borrow tokens** from the platform under 1 single unit of collateral.
+- **Status:** `[PASS]` (Foundry test verified).
+
+
 ---
 
 ## Technical Stack & Usage

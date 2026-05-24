@@ -17,7 +17,7 @@ contract FlashLoanPool {
     function flashLoan(uint256 _amount) public {
         uint256 balanceBefore = token.balanceOf(address(this));
         require(balanceBefore >= _amount, "Not enough tokens in pool");
-        token.transfer(msg.sender, _amount);
+        require(token.transfer(msg.sender, _amount), "Transfer failed");
         IFlashLoanReceiver(msg.sender).executeOperation(_amount);
         uint256 balanceAfter = token.balanceOf(address(this));
         require(balanceAfter >= balanceBefore, "Flash loan not repaid");
