@@ -75,6 +75,14 @@ Practical implementation of common Solidity vulnerabilities and professional mit
   5. Successfully drained **all 100,000 borrow tokens** from the platform under 1 single unit of collateral.
 - **Status:** `[PASS]` (Foundry test verified).
 
+### Lab 15: State Invariant & Handler-Based Fuzzing
+- **Concept:** Property-based testing and state invariants using Foundry's advanced fuzzing engine.
+- **Vulnerability:** Economic logic flaw in share calculation (`sharesToMint = (msg.value * totalShares) / totalAssets`). The contract relies solely on internal state accounting, making it vulnerable to direct asset donation.
+- **Exploit Architecture:**
+  1. Developed a dedicated `VaultHandler` to bound random fuzz inputs (`bound(shares, 0, userShares)`) and reduce test noise/reverts.
+  2. Introduced a `donate()` target function to simulate a direct forced ETH transfer (`address(vault).call{value: amount}("")`), bypassing the `deposit()` logic.
+  3. Created an invariant invariant check `realBalance == trackedAssets` to monitor the economic integrity of the protocol.
+- **Result:** `[PASS]` Foundry successfully generated 128,000 chaotic call sequences, catching the state discrepancy on the very first fuzz run and validating the vector while maintaining clean CI/CD green status.
 
 ---
 
