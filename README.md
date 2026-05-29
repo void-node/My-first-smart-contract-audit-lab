@@ -84,6 +84,11 @@ Practical implementation of common Solidity vulnerabilities and professional mit
   3. Created an invariant invariant check `realBalance == trackedAssets` to monitor the economic integrity of the protocol.
 - **Result:** `[PASS]` Foundry successfully generated 128,000 chaotic call sequences, catching the state discrepancy on the very first fuzz run and validating the vector while maintaining clean CI/CD green status.
 
+### Lab 16: Flash Loan Cross-Dex Arbitrage
+* **Concept:** Risk-free profit generation by exploiting price asymmetry across isolated DEX pools.
+* **Vulnerability:** Lack of price synchronization between AMM implementations. 
+* **Exploit:** Borrowed 10 tokens via flash loan, sold them on the expensive DEX for 10 ETH, used 5 ETH on the cheap DEX to buy back 10 tokens to repay the loan, and kept 5 ETH of pure profit.
+* **Status:** "PASS" (Verified via Foundry trace logs).
 ---
 
 ## Technical Stack & Usage
