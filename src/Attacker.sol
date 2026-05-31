@@ -17,7 +17,7 @@ contract Attacker {
 
     receive() external payable {
         if (address(bank).balance > 0) {
-            bank.withdraw(); 
+            bank.withdraw();
         }
     }
 

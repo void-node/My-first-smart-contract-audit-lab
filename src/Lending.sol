@@ -18,9 +18,9 @@ contract Lending {
     function borrow() external {
         uint256 price = oracle.price();
         uint256 amountToBorrow = collateral[msg.sender] * price;
-        
+
         payable(msg.sender).transfer(amountToBorrow);
     }
-    
+
     receive() external payable {}
 }

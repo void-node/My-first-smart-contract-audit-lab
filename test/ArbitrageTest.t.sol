@@ -12,12 +12,7 @@ contract ArbitrageBot {
     MockTokenArb public token;
     address public owner;
 
-    constructor(
-        address _flashPool,
-        address _cheapDex,
-        address payable _expensiveDex,
-        address _token
-    ) {
+    constructor(address _flashPool, address _cheapDex, address payable _expensiveDex, address _token) {
         flashPool = FlashMinterPool(_flashPool);
         cheapDex = CheapDex(_cheapDex);
         expensiveDex = ExpensiveDex(_expensiveDex);
@@ -33,7 +28,7 @@ contract ArbitrageBot {
         require(msg.sender == address(flashPool), "Only flash pool");
 
         token.approve(address(expensiveDex), amount);
-        
+
         expensiveDex.sellTokens(amount);
 
         uint256 ethToSpend = amount / 2;
@@ -62,23 +57,18 @@ contract ArbitrageTest is Test {
         cheapDex = new CheapDex(address(token));
         expensiveDex = new ExpensiveDex(address(token));
 
-        token.mint(address(flashPool), 1_000_000 * 10**18);
+        token.mint(address(flashPool), 1_000_000 * 10 ** 18);
         vm.deal(address(expensiveDex), 100 ether);
 
-        bot = new ArbitrageBot(
-            address(flashPool),
-            address(cheapDex),
-            payable(address(expensiveDex)),
-            address(token)
-        );
+        bot = new ArbitrageBot(address(flashPool), address(cheapDex), payable(address(expensiveDex)), address(token));
     }
 
     function testArbitrageExploit() public {
         vm.startPrank(attacker);
         uint256 balanceBefore = address(this).balance;
-        bot.startArbitrage(10 * 10**18);
+        bot.startArbitrage(10 * 10 ** 18);
         uint256 balanceAfter = address(this).balance;
-        assertEq(balanceAfter - balanceBefore, 5 * 10**18, "Arbitrage profit mismatch");
+        assertEq(balanceAfter - balanceBefore, 5 * 10 ** 18, "Arbitrage profit mismatch");
         vm.stopPrank();
     }
     receive() external payable {}

@@ -4,7 +4,7 @@ pragma solidity 0.8.28;
 contract MockTokenArb {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
-    
+
     function mint(address to, uint256 amount) external {
         balanceOf[to] += amount;
     }
@@ -41,9 +41,8 @@ contract FlashMinterPool {
 
         token.transfer(receiver, amount);
 
-        (bool success, ) = receiver.call(
-            abi.encodeWithSignature("executeOperation(uint256,address)", amount, msg.sender)
-        );
+        (bool success,) =
+            receiver.call(abi.encodeWithSignature("executeOperation(uint256,address)", amount, msg.sender));
         require(success, "Flash loan execution failed");
 
         uint256 balanceAfter = token.balanceOf(address(this));
@@ -74,7 +73,7 @@ contract ExpensiveDex {
     function sellTokens(uint256 tokenAmount) external {
         bool success = token.transferFrom(msg.sender, address(this), tokenAmount);
         require(success, "Transfer from failed");
-        
+
         payable(msg.sender).transfer(tokenAmount);
     }
 

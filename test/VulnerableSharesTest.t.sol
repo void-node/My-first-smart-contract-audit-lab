@@ -15,6 +15,7 @@ contract VaultHandler is Test {
         vm.deal(user1, 100 ether);
         vm.deal(user2, 100 ether);
     }
+
     function deposit(uint256 amount, uint8 userIndex) external {
         currentActor = userIndex % 2 == 0 ? user1 : user2;
         amount = bound(amount, 1 wei, currentActor.balance);
@@ -24,8 +25,9 @@ contract VaultHandler is Test {
             vault.deposit{value: amount}();
         }
     }
+
     function withdraw(uint256 shares, uint8 userIndex) external {
-        currentActor = userIndex % 2 == 0? user1 : user2;
+        currentActor = userIndex % 2 == 0 ? user1 : user2;
         uint256 userShares = vault.shareBalance(currentActor);
         shares = bound(shares, 0, userShares);
 
@@ -34,15 +36,17 @@ contract VaultHandler is Test {
             vault.withdraw(shares);
         }
     }
+
     function donate(uint256 amount) external {
         amount = bound(amount, 1 wei, 1 ether);
 
         vm.deal(address(this), amount);
 
-        (bool success, ) = address(vault).call{value: amount}("");
+        (bool success,) = address(vault).call{value: amount}("");
         require(success, "Transfer failed");
     }
 }
+
 contract VulnerableSharesTest is Test {
     VulnerableShares public vault;
     VaultHandler public handler;
@@ -53,6 +57,7 @@ contract VulnerableSharesTest is Test {
 
         targetContract(address(handler));
     }
+
     function invariant_VaultBalanceMatchesTotalAssets() public view {
         uint256 realBalance = address(vault).balance;
         uint256 trackedAssets = vault.totalAssets();
@@ -62,4 +67,4 @@ contract VulnerableSharesTest is Test {
         }
         assertEq(realBalance, trackedAssets, "Economic stat broken!");
     }
-    }
+}

@@ -12,9 +12,9 @@ contract OracleAttackTest is Test {
 
     function setUp() public {
         oracle = new Oracle(1);
-        
+
         lending = new Lending(address(oracle));
-        
+
         vm.deal(address(lending), 100 ether);
     }
 

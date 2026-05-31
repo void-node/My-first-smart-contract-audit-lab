@@ -17,6 +17,7 @@ contract StakingPoolTest is Test {
         vm.deal(hacker, 90 ether);
         vm.deal(address(this), 100 ether);
     }
+
     function testAttack() public {
         vm.prank(alice);
         pool.stake{value: 10 ether}();

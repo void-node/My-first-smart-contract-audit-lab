@@ -19,7 +19,7 @@ contract VaultTest is Test {
         vm.expectRevert(Vault.NotOwner.selector);
         vault.changeOwner(attacker);
         assertEq(vault.owner(), address(this));
-        
+
         console.log("New owner is attacker:", vault.owner());
     }
 }

@@ -21,6 +21,7 @@ contract VulnerableShares {
         totalShares += sharesToMint;
         totalAssets += msg.value;
     }
+
     function withdraw(uint256 shares) external {
         require(shares > 0, "Zero shares");
         require(shareBalance[msg.sender] >= shares, "Insufficient shares");

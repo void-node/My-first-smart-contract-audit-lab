@@ -26,7 +26,7 @@ contract SignatureAttackTest is Test {
         bytes memory signature = abi.encodePacked(r, s, v);
 
         vault.claimPrize(amount, signature);
-        
+
         uint256 n = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141;
         bytes32 invS = bytes32(n - uint256(s));
         uint8 invV = v == 27 ? 28 : 27;
@@ -34,7 +34,7 @@ contract SignatureAttackTest is Test {
 
         vm.expectRevert();
         vault.claimPrize(amount, malleSignature);
-        
+
         assertEq(address(this).balance, startBalance + 1 ether);
     }
     receive() external payable {}

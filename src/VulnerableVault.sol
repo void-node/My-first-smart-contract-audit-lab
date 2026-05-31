@@ -13,7 +13,7 @@ contract VulnerableVault {
 
     function claimReward() external {
         uint256 poolBalance = address(pool).balance;
-        
+
         if (poolBalance > 10 ether) {
             rewards[msg.sender] += 1;
         }

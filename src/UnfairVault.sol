@@ -20,15 +20,17 @@ contract UnfairVault {
         totalShares += shares;
         totalAssets += msg.value;
     }
+
     function withdraw(uint256 _shares) public {
-        require(balanceOf [msg.sender] >= _shares, "Low shares balance");
+        require(balanceOf[msg.sender] >= _shares, "Low shares balance");
         uint256 assetsToWithdraw = (_shares * totalAssets);
         balanceOf[msg.sender] -= _shares;
         totalShares -= _shares;
         totalAssets -= assetsToWithdraw;
-        (bool success, ) = msg.sender.call{value: assetsToWithdraw}("");
+        (bool success,) = msg.sender.call{value: assetsToWithdraw}("");
         require(success, "Transfer failed");
     }
+
     function receiveProfit() public payable {
         totalAssets += msg.value;
     }

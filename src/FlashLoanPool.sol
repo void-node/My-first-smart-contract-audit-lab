@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import "./GovernanceToken.sol";
 
 interface IFlashLoanReceiver {
-function executeOperation(uint256 amount) external;
+    function executeOperation(uint256 amount) external;
 }
 
 contract FlashLoanPool {

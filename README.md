@@ -66,6 +66,9 @@ Exploited asset price gaps across disconnected automated market makers. Wrote a 
 ### Lab 17: Cryptographic Signature Replay (`SignatureReplayVault`)
 The verification logic in `SignatureReplayVault.sol` hashes only the recipient and amount, completely omitting `block.chainid`, `address(this)`, or sequential nonces. Captured a valid owner signature used on `vaultAlpha` and successfully replayed the identical data string to completely drain `vaultBeta`.
 
+### Lab 18: Cross-Chain Bridge Proof Forgery (`BridgeProofVault`)
+Exploited a 64-byte Merkle tree collision vulnerability inside `BridgeProofVault.sol` due to missing leaf domain separation. Constructed a forged cryptographic proof by passing an intermediate internal node layout as raw payload data (`address` + `uint256`), triggering a valid verification cycle and draining bridge liquidity without trusted validator signatures.
+
 ---
 
 ## Technical Stack & Usage

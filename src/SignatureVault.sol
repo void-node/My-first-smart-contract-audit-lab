@@ -8,7 +8,9 @@ contract SignatureVault {
     address public admin;
     mapping(bytes32 => bool) public usedSignatures;
 
-    constructor(address _admin) { admin = _admin; }
+    constructor(address _admin) {
+        admin = _admin;
+    }
 
     function claimPrize(uint256 amount, bytes calldata signature) external {
         bytes32 messageHash = keccak256(abi.encodePacked(msg.sender, amount));

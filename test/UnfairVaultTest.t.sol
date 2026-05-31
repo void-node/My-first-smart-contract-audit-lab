@@ -14,6 +14,7 @@ contract UnfairVaultTest is Test {
         vm.deal(hacker, 10.1 ether);
         vm.deal(bob, 20 ether);
     }
+
     function testVaultInflationExploit() public {
         vm.startPrank(hacker);
         vault.deposit{value: 1}();

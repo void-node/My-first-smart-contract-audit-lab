@@ -16,6 +16,7 @@ contract CreamMarketTest is Test {
         vm.deal(address(market), 100 ether);
         vm.deal(hacker, 10 ether);
     }
+
     function testCreamReentrancy() public {
         assertEq(address(attackContract).balance, 0);
         vm.prank(hacker);
