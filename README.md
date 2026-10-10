@@ -72,6 +72,10 @@ Exploited a 64-byte Merkle tree collision vulnerability inside `BridgeProofVault
 ### Lab 19: Cross-Chain Message Replay Attack (`CrossChainMessageVault`)
 Bypassed cross-chain verification index inside `CrossChainMessageVault.sol` because the signed message payload lacks target `block.chainid` binding. Captured a valid validator signature from Ethereum (ChainID 1) and replayed the exact same data payload directly to the BNB Chain instance (ChainID 56), draining the entire 10 ETH vault treasury in a single block flow.
 
+### Lab 20: Accounting Drift via Write-Before-Read Ordering (AccountingDriftVault)
+
+A share-based vault's withdraw() reduced totalShares before calculating the payout (assets = shares * totalAssets / totalShares), so the division ran against an already-shrunk denominator and overpaid the withdrawer. A hand-written test shows an attacker walking away with double their deposit at a victim's expense. A Foundry invariant test, using a Handler contract that simulates many randomized depositors and withdrawers, independently rediscovers a minimal 2-call sequence (deposit, then withdraw) that breaks the totalShares == totalAssets invariant — without being told the exploit in advance. The fix simply reorders the calculation to run before the state update; see src/AccountingDriftVaultFixed.sol.
+
 ---
 
 ## Technical Stack & Usage
