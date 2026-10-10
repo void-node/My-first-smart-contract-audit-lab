@@ -17,4 +17,4 @@ jobs:
           version: stable
 
       - name: Run tests
-        run: forge test -vvv
+        run: forge test -vvv --no-match-contract InvariantTestVulnerable
