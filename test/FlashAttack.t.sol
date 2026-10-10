@@ -16,7 +16,7 @@ contract AttackerContract {
 
     receive() external payable {
         vault.claimReward();
-        (bool success, ) = payable(msg.sender).call{value: msg.value}("");
+        (bool success,) = payable(msg.sender).call{value: msg.value}("");
         require(success, "Transfer failed");
     }
 

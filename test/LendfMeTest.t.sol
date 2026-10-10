@@ -1,4 +1,4 @@
-// SPDX-Licence-Identifier: MIT
+//SPDX-Licence-Identifier: MIT
 pragma solidity ^0.8.28;
 
 import "forge-std/Test.sol";
@@ -16,6 +16,7 @@ contract LendfMeTest is Test {
         vm.deal(address(target), 50 ether);
         vm.deal(hacker, 10 ether);
     }
+
     function testLendfMeExploit() public {
         assertEq(target.balances(address(attackContract)), 0);
         vm.prank(hacker);

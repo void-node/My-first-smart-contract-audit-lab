@@ -12,7 +12,7 @@ contract FlashPool {
         uint256 balanceBefore = address(this).balance;
         require(balanceBefore >= amount, "Not enough funds");
 
-        (bool success, ) = target.call{value: amount}(data);
+        (bool success,) = target.call{value: amount}(data);
         require(success, "External call failed");
 
         require(address(this).balance >= balanceBefore, "Flash loan not repaid");

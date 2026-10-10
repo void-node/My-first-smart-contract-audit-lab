@@ -6,15 +6,15 @@ interface IERC20 {
 }
 
 contract Governance {
-   uint256 public yesVotes;
-   address public tokenAddress;
+    uint256 public yesVotes;
+    address public tokenAddress;
 
-   constructor(address _token) {
-       tokenAddress = _token;
-       }
+    constructor(address _token) {
+        tokenAddress = _token;
+    }
 
     function vote() public {
         uint256 balance = IERC20(tokenAddress).balanceOf(msg.sender);
         yesVotes += balance;
     }
-   }
+}

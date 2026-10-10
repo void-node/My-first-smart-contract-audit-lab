@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28;
+pragma solidity 0.8.28;
 
 import "./Bank.sol";
 
@@ -17,7 +17,7 @@ contract Attacker {
 
     receive() external payable {
         if (address(bank).balance > 0) {
-            bank.withdraw(); 
+            bank.withdraw();
         }
     }
 

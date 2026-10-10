@@ -9,10 +9,10 @@ contract SimpleVault {
     }
 
     function withdraw(uint256 _amount) public {
-        require(balances[msg.sender] >= 0, "Not enough funds"); 
+        require(balances[msg.sender] >= 0, "Not enough funds");
         payable(msg.sender).transfer(_amount);
-        unchecked{
-        balances[msg.sender] -= _amount;
+        unchecked {
+            balances[msg.sender] -= _amount;
         }
     }
 
