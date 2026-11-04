@@ -75,6 +75,13 @@ Bypassed cross-chain verification index inside `CrossChainMessageVault.sol` beca
 ### Lab 20: Accounting Drift via Write-Before-Read Ordering (`AccountingDriftVault`)
 A share-based vault's `withdraw()` reduced `totalShares` *before* calculating the payout (`assets = shares * totalAssets / totalShares`), so the division ran against an already-shrunk denominator and overpaid the withdrawer. A hand-written test shows an attacker walking away with double their deposit at a victim's expense. A Foundry invariant test, using a Handler contract that simulates many randomized depositors and withdrawers, independently rediscovers a minimal 2-call sequence (deposit, then withdraw) that breaks the `totalShares == totalAssets` invariant — without being told the exploit in advance. The fix simply reorders the calculation to run before the state update; see `src/AccountingDriftVaultFixed.sol`.
 
+### Lab 21: Forced Ether Freeze via selfdestruct (`ForcedEtherGame`)
+[What the game is, in one sentence.] [The vulnerable rule reads the wallet
+balance, and the Bomb pushes 1 wei in with selfdestruct, skipping deposit().]
+[Result: the wallet never equals exactly 7 ether again, so the game freezes.]
+[Test 1 proves the freeze, test 2 shows the same Bomb fails against the fix];
+see `src/ForcedEtherGameFixed.sol`.
+
 ---
 
 ## Technical Stack & Usage
