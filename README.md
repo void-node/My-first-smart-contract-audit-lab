@@ -76,12 +76,10 @@ Bypassed cross-chain verification index inside `CrossChainMessageVault.sol` beca
 A share-based vault's `withdraw()` reduced `totalShares` *before* calculating the payout (`assets = shares * totalAssets / totalShares`), so the division ran against an already-shrunk denominator and overpaid the withdrawer. A hand-written test shows an attacker walking away with double their deposit at a victim's expense. A Foundry invariant test, using a Handler contract that simulates many randomized depositors and withdrawers, independently rediscovers a minimal 2-call sequence (deposit, then withdraw) that breaks the `totalShares == totalAssets` invariant — without being told the exploit in advance. The fix simply reorders the calculation to run before the state update; see `src/AccountingDriftVaultFixed.sol`.
 
 ### Lab 21: Forced Ether Freeze via selfdestruct (`ForcedEtherGame`)
-[What the game is, in one sentence.] [The vulnerable rule reads the wallet
-balance, and the Bomb pushes 1 wei in with selfdestruct, skipping deposit().]
-[Result: the wallet never equals exactly 7 ether again, so the game freezes.]
-[Test 1 proves the freeze, test 2 shows the same Bomb fails against the fix];
-see `src/ForcedEtherGameFixed.sol`.
+A game where each player deposits exactly 1 ether, and the player whose deposit makes the pot exactly 7 ether becomes the winner. The vulnerable rule reads the wallet balance (`address(this).balance`). The Bomb pushes 1 wei into the game with `selfdestruct`, which skips `deposit()`, so the game never gets a chance to reject it. The wallet can never equal exactly 7 ether again, so the game freezes forever. Test 1 (`test_BombFreezesVulnerableGame`) proves the freeze. Test 2 (`test_BombDoesNotFreezeFixedGame`) shows the same Bomb fails against the fix, because the fixed game reads only the `deposited` notebook, which only its own code writes; see `src/ForcedEtherGameFixed.sol`.
 
+### Lab 22: Fee-on-Transfer Deposit (`FeeTokenVault`)
+A vault's `deposit()` trusted the typed amount, so it credited 100 although less arrived. A user typed 100, the token took a fee, and only 97 arrived, so the notebook said 100 while the safe held 97. The first version of `test_depositKeepsInvariant` failed with `100 != 97`. The fix reads the safe's balance before the transfer and after it, and credits only the difference; see `src/FeeTokenVault.sol`. The invariant is `safe >= totalAssets`, not `==`, because a direct transfer can leave extra tokens in the safe. A `totalAssets` counter prices the shares, so a direct transfer can't change the price. In `test_donationDoesNotHurtBob`, Bob gets back the 146 that really arrived, and the 4 he doesn't get back is the token's fee, not a donation loss.
 ---
 
 ## Technical Stack & Usage
